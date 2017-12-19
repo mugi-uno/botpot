@@ -1,0 +1,5 @@
+.el-button, .el-radio-button {
+  i:first-child:not(:last-child) {
+    margin-right: 5px;
+  }
+}
