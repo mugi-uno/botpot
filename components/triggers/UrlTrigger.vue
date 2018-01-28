@@ -8,7 +8,7 @@
         @input='$emit("update", ["token", $event])'
       )
         template(slot='prepend')
-          span http://xxxxxx/
+          span /t/
     el-button(
       size="small"
       @click="$emit('generate')"
