@@ -28,6 +28,7 @@ section.container
         @delete='deleteFlow'
         @addAction='addAction'
         @deleteAction='deleteAction'
+        @generateUrlToken='generateUrlToken'
       )
 </template>
 
@@ -69,7 +70,8 @@ export default {
       'addFlow',
       'deleteFlow',
       'addAction',
-      'deleteAction'
+      'deleteAction',
+      'generateUrlToken'
     ])
   }
 };

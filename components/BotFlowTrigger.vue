@@ -25,6 +25,12 @@
         :data='trigger.data'
         @update='$emit("update", ["data", ...$event])'
       )
+      url-trigger(
+        v-else-if='trigger.kind === "url"'
+        :data='trigger.data'
+        @update='$emit("update", ["data", ...$event])'
+        @generate='$emit("generateUrlToken")'
+      )
       word-trigger(
         v-else
         :data='trigger.data'
@@ -34,17 +40,20 @@
 
 <script>
 import WordTrigger from './triggers/WordTrigger';
+import UrlTrigger from './triggers/UrlTrigger';
 import ScheduleTrigger from './triggers/ScheduleTrigger';
 
 export default {
   components: {
     WordTrigger,
+    UrlTrigger,
     ScheduleTrigger
   },
   data () {
     return {
       kinds: [
         { value: 'word', label: 'Word' },
+        { value: 'url', label: 'URL' },
         { value: 'schedule', label: 'Schedule' }
       ]
     };

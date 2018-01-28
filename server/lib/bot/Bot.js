@@ -2,9 +2,11 @@ const BotModel = require('../../models/bot');
 const actions = require('../common/actions');
 const scheduler = require('./Scheduler');
 const _ = require('lodash');
+const EventEmitter = require('events').EventEmitter;
 
-module.exports = class Bot {
+module.exports = class Bot extends EventEmitter {
   constructor (client) {
+    super();
     this.started = false;
     this.client = client;
   }
@@ -22,6 +24,7 @@ module.exports = class Bot {
 
   unbindAllTriggers () {
     this.client.removeAllListeners('messageReceived');
+    this.removeAllListeners('urlReceived');
     scheduler.cancelAll();
   }
 
@@ -42,6 +45,9 @@ module.exports = class Bot {
         case 'word':
           this.bindMessageTriggerFlow(flow);
           break;
+        case 'url':
+          this.bindUrlTriggerFlow(flow);
+          break;
         case 'schedule':
           this.bindScheduleTriggerFlow(flow);
           break;
@@ -56,6 +62,14 @@ module.exports = class Bot {
       if (!data.actionName || data.actionName !== flow.trigger.data.word) return;
 
       this.executeAllActions(flow, data);
+    });
+  }
+
+  bindUrlTriggerFlow (flow) {
+    this.on('urlReceived', (params) => {
+      if (!params.token || params.token !== flow.trigger.data.token) return;
+
+      this.executeAllActions(flow, params);
     });
   }
 
