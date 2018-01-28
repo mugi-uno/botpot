@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import axios from 'axios';
 import uuid from 'uuid/v4';
+import shortid from 'shortid';
 import _ from 'lodash';
 import { Record, Map as IMap, List } from 'immutable';
 
@@ -95,6 +96,9 @@ export const mutations = {
     const newAction = new ActionRecord({ key: uuid() }).toJS();
     const prev = state.flows[state.activeFlowIndex].actions;
     state.flows[state.activeFlowIndex].actions = [...prev.slice(0, index), newAction, ...prev.slice(index)];
+  },
+  generateUrlToken (state) {
+    Vue.set(state.flows[state.activeFlowIndex].trigger.data, 'token', shortid());
   },
   deleteFlow (state) {
     const prev = state.flows;

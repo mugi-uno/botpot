@@ -5,6 +5,7 @@
       bot-flow-trigger(
         :trigger='flow.trigger'
         @update='$emit("update", ["trigger", ...$event])'
+        @generateUrlToken='$emit("generateUrlToken")'
       )
     bot-flow-action-separator(
       @addAction='$emit("addAction", 0)'
