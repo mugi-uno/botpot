@@ -1,22 +1,24 @@
 const express = require('express');
 const router = express.Router();
+const startBot = require('../../../lib/bot/startBot');
 const BotFactory = require('../../../lib/bot/BotFactory');
-const SlackClient = require('../../../lib/slack/SlackClient');
 const getChannels = require('../../../lib/slack/webclient/getChannels');
 
 router.post('/start', async (req, res, next) => {
   const state = req.body;
 
-  const client = new SlackClient(state);
-  const bot = BotFactory.create(client);
-
-  await bot.sync(state);
-  bot.start({ token: state.token });
+  const bot = await startBot(state, { forceStart: true });
+  await bot.syncUpdate({ running: true });
 
   res.send('success');
 });
 
-router.post('/stop', (req, res, next) => {
+router.post('/stop', async (req, res, next) => {
+  const bot = BotFactory.currentBot();
+  if (bot) {
+    await bot.syncUpdate({ running: false });
+  }
+
   BotFactory.destroyAll();
   res.send('success');
 });

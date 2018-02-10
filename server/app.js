@@ -14,6 +14,16 @@ const isProd = (process.env.NODE_ENV === 'production');
 const mongoose = require('mongoose');
 mongoose.connect(process.env.DATABASE_URI);
 
+const BotModel = require('./models/bot');
+const startBot = require('./lib/bot/startBot');
+
+(async () => {
+  const bot = await BotModel.findOne().exec();
+  if (bot) {
+    await startBot(bot.toObject());
+  }
+})();
+
 const axios = require('axios');
 axios.defaults.baseURL = process.env.APP_HOST;
 

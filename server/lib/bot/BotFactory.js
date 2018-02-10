@@ -10,6 +10,10 @@ class BotFactory {
   }
 
   create (client) {
+    if (this.bot) {
+      return this.bot;
+    }
+
     this.bot = new Bot(client);
     return this.bot;
   }
