@@ -35,6 +35,11 @@ module.exports = class Bot extends EventEmitter {
     this.bindAllFlows(state);
   }
 
+  async syncUpdate (attributes = {}) {
+    const bot = await BotModel.findOne().exec();
+    await this.sync({ ...bot.toObject(), ...attributes });
+  }
+
   bindAllFlows (state = {}) {
     this.unbindAllTriggers();
 
