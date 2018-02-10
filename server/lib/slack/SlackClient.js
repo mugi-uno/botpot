@@ -24,7 +24,12 @@ module.exports = class SlackClient extends BaseClient {
         // eslint-disable-next-line no-unused-vars
         const [to, actionName, ...actionParams] = message.text.split(/\s+/);
 
-        if (!(to || '').trim().startsWith(connectData.self.name)) return;
+        const toMe = (org = '') => {
+          const to = org.trim();
+          return to.startsWith(connectData.self.name) || to === `<@${connectData.self.id}>`;
+        };
+
+        if (!toMe(to)) return;
 
         this.emitMessageReceived({
           message: message.text,
