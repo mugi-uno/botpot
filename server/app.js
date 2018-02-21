@@ -25,7 +25,7 @@ const startBot = require('./lib/bot/startBot');
 })();
 
 const axios = require('axios');
-axios.defaults.baseURL = process.env.APP_HOST;
+axios.defaults.baseURL = process.env.BASE_URL;
 
 const app = express();
 
